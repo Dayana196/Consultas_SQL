@@ -60,3 +60,39 @@ CREATE TABLE `PedidoProductoCompuesta`(
     FOREIGN KEY(`producto_id`) REFERENCES `Productos`(`producto_id`)
 );
 
+-- procedures 
+DELIMITER $$ 
+
+CREATE PROCEDURE hello_world(IN p_nombre VARCHAR(100))
+BEGIN 
+    SELECT CONCAT('HOLIIII : ', p_nombre) AS saludo;
+END$$
+
+DELIMITER ;
+
+--LLAMADO
+CALL nombre_procedura (...)
+
+DELIMITER // 
+
+CREATE PROCEDURE calcular_empleado(IN p_ventas DECIMAL(10,2))
+BEGIN
+    IF p_ventas >= 100000 THEN 
+        SELECT 'El empleado cumplio con las ventas' as resultado;
+    ELSEIF p_ventas >= 50000 THEN 
+        SELECT 'El empleado CASI cumplio con las ventas' as resultado;
+    ELSE 
+        SELECT 'El empleado NOOOOOO cumplio con las ventas' as resultado;
+    END IF; 
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrar_top_ventas(IN p_min DECIMAL(10,2), IN p_max DECIMAL(10,2))
+BEGIN
+    SELECT * FROM pedidos WHERE total BETWEEN p_min AND p_max;
+END// 
+
+DELIMITER ;
+CALL mostrar_top_ventas(40.00, 100.00);
